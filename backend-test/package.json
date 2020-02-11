@@ -1,0 +1,29 @@
+{
+  "name": "backend-test",
+  "version": "1.0.0",
+  "description": "weather-service-backend-junior test of De Palma Gian",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "start": "node index.js",
+    "heroku": "cd client && npm install && npm run build"
+  },
+  "author": "De Palma Gian",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-basic-auth": "^1.2.0"
+  },
+  "engines": {
+    "node": "10.x"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
+  }
+}
