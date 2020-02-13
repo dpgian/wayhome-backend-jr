@@ -45,7 +45,6 @@ app.get('/forecast', (req, res) => {
 })
 
 // Middleware to cache results
-var cache = {}
 var memoMiddleware = (req, res, next) => {
     const key = req.url
     if (cache[key]) {
@@ -60,8 +59,17 @@ var memoMiddleware = (req, res, next) => {
     }
 }
 
+let cache = {}
 // GET /forecast/<city>
-app.get('/forecast/:city', memoMiddleware, (req, res) => {
+app.get('/forecast/:city', (req, res) => {
+
+    let key = req.url
+    if (cache[key]) {
+        res.send(cache[key])
+        return
+    } else {
+        getData()
+    }
 
     async function getData() {
 
@@ -110,7 +118,7 @@ app.get('/forecast/:city', memoMiddleware, (req, res) => {
             }
 
             const fetchedData = await axios.get(`${URI}?q=${req.params.city}&appid=${APIKEY}&units=${tunit}`)
-
+            
             const temperature = fetchedData.data.main.temp+tsymbol
             const humidity = fetchedData.data.main.humidity+'%'
             const pressureValue = fetchedData.data.main.pressure
@@ -127,10 +135,11 @@ app.get('/forecast/:city', memoMiddleware, (req, res) => {
                 temperature
             }
 
+            cache[key] = response
             res.status(200).send(response)
-        
+            return 
+
         } catch (e) {
-            //console.log(e)
             
             if(e.response.data.cod=='404'){
                 //response.data.message = 'city not found'
@@ -138,17 +147,17 @@ app.get('/forecast/:city', memoMiddleware, (req, res) => {
                     "error": `Cannot find country '${req.params.city}'`,
                     "error_code": "country not found"
                 })
+                return
             }
 
             res.status(500).send({
                 "error": "Something went wrong",
                 "error_code": "internal server error"
             })
+            return
 
         }
     }
-
-    getData()
 
 })
 

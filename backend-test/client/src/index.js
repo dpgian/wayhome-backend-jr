@@ -14,17 +14,17 @@ let App = () => {
     let [data, setData] = React.useState({})
 
     let fetchData = async () => {
-        let auth = { username, password }
+        //let auth = { username, password }
         let error = ''
         
-        let data = await axios.get(`http://localhost:8080/forecast/${city}?tunit=${temp}&punit=${pressure}`)
+        let data = await axios.get(`http://localhost:8080/htmlForecast/${city}?tunit=${temp}&punit=${pressure}`)
                     .catch((e) => error= e.response.status)
                 
-        if(error == 401) {
+        if(error === 401) {
             setError('Bad Credentials')
-        } else if (error == 400) {
+        } else if (error === 400) {
             setError('Enter a City')
-        } else if (error == 404) {
+        } else if (error === 404) {
             setError('City does not exist')
         } else {
         setData(data.data)
@@ -71,7 +71,7 @@ axios.post(session_url, {
           {error}
           <hr />
           {/*<button type='text' onClick={e => getAuth()}>AUTH</button>*/}
-          <form 
+          <form
             onSubmit={e => {
                 e.preventDefault()
                 setError('')
@@ -82,22 +82,22 @@ axios.post(session_url, {
               <input type='text' placeholder='Search city' value={city} onChange={(e)=> setCity(e.target.value)}/>
             <br/>
               <input type="radio" id="Kelvin" name="temp" value="K" onClick={(e)=> setTemp(e.target.value)}/>
-              <label for="Kelvin">Kelvin</label>
+              <label htmlFor="Kelvin">Kelvin</label>
               <input type="radio" id="Celsius" name="temp" value="C" onClick={(e)=> setTemp(e.target.value)}/>
-              <label for="Celsius">Celsius</label>
+              <label htmlFor="Celsius">Celsius</label>
               <input type="radio" id="Fahrenheit " name="temp" value="F" onClick={(e)=> setTemp(e.target.value)}/>
-              <label for="Fahrenheit ">Fahrenheit</label>
+              <label htmlFor="Fahrenheit ">Fahrenheit</label>
               <br/>
               <input type="radio" id="pascal " name="pressure" value="pascal" onClick={(e)=> setPressure(e.target.value)}/>
-              <label for="pascal ">hPascal</label>
+              <label htmlFor="pascal ">hPascal</label>
               <input type="radio" id="Bars" name="pressure" value="bars" onClick={(e)=> setPressure(e.target.value)}/>
-              <label for="Bars">Bars</label>
+              <label htmlFor="Bars">Bars</label>
               <input type="radio" id="Tor" name="pressure" value="tor" onClick={(e)=> setPressure(e.target.value)}/>
-              <label for="Tor">Tor</label>
+              <label htmlFor="Tor">Tor</label>
               <input type="radio" id="Atmospheres " name="pressure" value="atm" onClick={(e)=> setPressure(e.target.value)}/>
-              <label for="Atmospheres ">Atmospheres</label>
+              <label htmlFor="Atmospheres ">Atmospheres</label>
               <input type="radio" id="Mercury " name="pressure" value="mercury" onClick={(e)=> setPressure(e.target.value)}/>
-              <label for="Mercury ">Mercury</label>
+              <label htmlFor="Mercury ">Mercury</label>
               <br/>
               <button type='submit'>Search</button>
           </form>
@@ -107,7 +107,9 @@ axios.post(session_url, {
           <table>
             <thead>
                 <tr>
-                        Name: {city}
+                    <th>
+                      Name: {city}
+                    </th>
                 </tr>
                 <tr>
                     <th>Clouds</th>
